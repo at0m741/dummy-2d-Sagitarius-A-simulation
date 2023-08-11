@@ -88,7 +88,6 @@ def kerr_geodesic(x, y, z, vx, vy, vz):
     return fx, fy, fz, fphi, fpr, fptheta
 
 
-# Fonction qui calcule la trajectoire d'une particule à partir de ses coordonnées initiales
 def compute_trajectory(x0, y0, vx0, vy0, dt, n_steps):
     x = np.zeros(n_steps)
     y = np.zeros(n_steps)
@@ -112,29 +111,23 @@ def compute_trajectory(x0, y0, vx0, vy0, dt, n_steps):
     return x, y
 
 
-# Fonction qui trace les géodésiques
 def plot_geodesics(x0_list, y0_list, vx0_list, vy0_list, dt, n_steps):
     # Création de la figure
     fig, ax = plt.subplots()
     R = 2*G*M/c**2
 
-    # Définition de la grille pour le tracé des géodésiques
     x_grid = np.linspace(-R, R, 100)
     y_grid = np.linspace(-R, R, 100)
     X, Y = np.meshgrid(x_grid, y_grid)
 
-    # Calcul des accélérations sur la grille
     ax_grid, ay_grid = acceleration(X, Y)
 
-    # Tracé des géodésiques
     for x0, y0, vx0, vy0 in zip(x0_list, y0_list, vx0_list, vy0_list):
         x, y = compute_trajectory(x0, y0, vx0, vy0, dt, n_steps)
         ax.plot(x, y)
     
-    # Tracé des accélérations
     ax.quiver(X, Y, ax_grid, ay_grid)
 
-    # Configuration de la figure
     ax.set_aspect('equal')
     ax.set_xlim([-R, R])
     ax.set_ylim([-R, R])
@@ -142,15 +135,12 @@ def plot_geodesics(x0_list, y0_list, vx0_list, vy0_list, dt, n_steps):
     ax.set_ylabel('Y (m)')
     ax.set_title('Géodésiques dans le champ gravitationnel terrestre')
 
-    # Affichage de la figure
     plt.show()
 
 
 # def generate_magnetic_perturbations(radius, strength, num_points, num_lines):
-#     # Génération des coordonnées radiales
 #     r = np.linspace(-radius, radius, num_points)
 
-#     # Génération des perturbations magnétiques
 #     magnetic_field = np.zeros((num_lines, num_points))
 #     for i in range(num_lines):
 #         phase = np.random.uniform(-2*np.pi, 2*np.pi)
@@ -159,7 +149,6 @@ def plot_geodesics(x0_list, y0_list, vx0_list, vy0_list, dt, n_steps):
 #         perturbation = amplitude * np.sin(frequency * r + phase)
 #         magnetic_field[i] = strength * perturbation
 
-#     # Ajout de bruit aléatoire aux perturbations magnétiques
 #     noise = np.random.normal(0, 0.1 * strength, (num_lines, num_points))
 #     magnetic_field += noise
 
@@ -217,15 +206,12 @@ vx0 = 1.0  # vitesse initiale en x
 vy0 = 1.0  # vitesse initiale en y
 vz0 = 1.0  # vitesse initiale en z
 
-# Définir les pas de temps et le nombre d'itérations
 dt = 0.10  # pas de temps
 num_iterations = 5000
 
-# Tableaux pour stocker les coordonnées des trajectoires
 x_traj = [x0]
 y_traj = [y0]
 
-# Boucle d'itération pour calculer les trajectoires
 for i in range(num_iterations):
     # Calculer les accélérations
     ax, ay, _, _, _, _ = kerr_geodesic(x_traj[-1], y_traj[-1], z0, vx0, vy0, vz0)
@@ -237,11 +223,9 @@ for i in range(num_iterations):
     vx_new = vx0 + ax * dt
     vy_new = vy0 + ay * dt
     
-    # Ajouter les nouvelles positions aux tableaux des trajectoires
     x_traj.append(x_new)
     y_traj.append(y_new)
     
-    # Mettre à jour les vitesses initiales
     vx0 = vx_new
     vy0 = vy_new
 
@@ -271,7 +255,6 @@ def kerr_ring_singularity(a, theta, phi):
     z += Z
     return fx, fy, fz
 
-# Ajout de la singularité dans le graphique
 
 fig = plt.figure(figsize=(6, 4))
 ax = fig.add_subplot(111)
@@ -288,12 +271,9 @@ circle = Circle((0, 0), Rs, color='black', fill=False, label='Black hole')
 ax.add_patch(circle)
 print('Rs = ', Rs)
 plt.legend()
-# Ajouter une grille
 ax.grid(True)
-# add legend
 # sing_legend.legendHandles[0].set_color('black')
 
-# combine legends into one
 
 # ax.add_artist(sing_legend)
 # for i in range(num_lines):
